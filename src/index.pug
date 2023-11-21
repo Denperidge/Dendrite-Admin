@@ -17,20 +17,63 @@ html(lang="en")
             }
             #result {
                 text-align: left;
-                overflow-x: auto;
+                overflow: auto;
+                border: 1px solid black;
             }
+
+
+
     body 
         include form.pug
         header
         
         main#main
             h1 Dendrite Admin
-            input(type="text" placeholder="Access token")#accesstoken.config
-            input(type="text" placeholder="matrix.example.com")#baseurl.config
 
             pre#result
 
-            +form("GET", "/_matrix/client/v3/admin/whois/{userId}", "userId")
+            form(method="GET", action="/")
+                h2 General config
+                label(for="baseurl") Base url
+                input(type="text" name="baseurl" placeholder="https://matrix.example.com")#baseurl.config
+
+                br
+
+                label(for="accesstoken") Accesstoken
+                input(type="text" name="accesstoken" placeholder="Access token")#accesstoken.config
+                br
+
+                h2 Endpoints
+                select(selected=0)#selectendpoint
+                    +endpoint("GET", "/_matrix/client/v3/admin/whois/", "userId", "@user:example.com")
+                br
+
+                h2 Endpoint arguments
+
+                label(for="arg")#arglabel Arg
+                input(type="text" name="arg" placeholder="{argument}")#arg
+                br
+
+                input(type="submit")
+
+                br
+
+
+                details#request
+                    summary Request info
+
+                    label(for="method") Method
+                    select(name="method")#method
+                        option GET
+                        option POST
+                    br
+
+                    label(for="endpoint") Endpoint
+                    input(type="text" name="endpoint" placeholder="/_matrix/client/v3/")#endpoint
+
+                    br
+
+
 
 
         script(src="npm:jquery/dist/jquery.min.js")

@@ -1,50 +1,53 @@
-function updateBaseurl() {
-    $("form").each((i, elem) => {
-        elem = $(elem);
-        elem.attr("action", "https://" + localStorage.getItem("baseurl") + elem.attr("data-action"));
-    });   
-}
-
+// General config
 $(".config").on("change", (e) => {
     localStorage.setItem(e.target.id, e.target.value);
     console.log(e.target.id)
-
-    if (e.target.id == "baseurl") {
-        updateBaseurl();
-    }
 });
-
-
 $(".config").each((i, elem) => {
     elem.value = localStorage.getItem(elem.id);
 })
 
 
-$("form input").on("keyup", (e) => {
-    const form = $(e.target).parent("form");
-
-    let action = form.attr("action");
-    action = action.substring(0, action.lastIndexOf("/") + 1) + e.target.value;
-
-    form.attr("action", action);
-    form.children("h2").text(form.attr("method") + " " + action)
-});
-
+// Send requests
 $("form").on("submit", function(e) {
+    console.log("meow")
+
     e.preventDefault();
     target = $(e.target);
 
+    console.log("meow")
+
     $.ajax({
-        type: target.attr("method"),
-        url: target.attr("action"),
+        type: $("#method").val(),
+        url: $("#baseurl").val().trim() + $("#endpoint").val().trim() + $("#arg").val().trim(),
+
         contentType: "application/json",
         headers: {
-            "Authorization": "Bearer " + localStorage.getItem("accesstoken").trim()
+            "Authorization": "Bearer " + $("#accesstoken").val()
         }
     }).then((data) => {
         console.log(data)
-        $("#result").jsonViewer(data);
+        $("#result").animate({"height": "600px"}).jsonViewer(data);
+    }).catch((err) => {
+        console.error(err);
     });
 });
 
-updateBaseurl();
+
+function endpointSelect() {
+    const target = $("#selectendpoint option:selected");
+
+    console.log(target)
+    const method = target.attr("data-method");
+    const endpoint = target.attr("data-endpoint");
+    const argname = target.attr("data-argname");
+    const placeholder = target.attr("data-placeholder");
+
+    $("#method").val(method);
+    $("#endpoint").val(endpoint);
+    $("#arglabel").text(argname);
+    $("#arg").attr("placeholder", placeholder);
+}
+
+$("#selectendpoint").on("input", endpointSelect);
+endpointSelect();

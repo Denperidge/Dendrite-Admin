@@ -5,4 +5,7 @@ mixin form(method="GET", action, argname)
             input(type="text" name=argname placeholder=argname id=argname)
         br
         input(type="submit")
-        
+    
+
+mixin endpoint(method="GET", endpoint, argname, placeholder)
+    option(data-method=method, data-endpoint=endpoint, data-argname=argname, data-placeholder=placeholder) #{method} #{endpoint}{#{argname}}
