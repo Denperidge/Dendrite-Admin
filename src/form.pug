@@ -7,5 +7,9 @@ mixin form(method="GET", action, argname)
         input(type="submit")
     
 
-mixin endpoint(method="GET", endpoint, argname, placeholder)
-    option(data-method=method, data-endpoint=endpoint, data-argname=argname, data-placeholder=placeholder) #{method} #{endpoint}{#{argname}}
+mixin endpoint(id, title, method="GET", endpoint, param, paramPlaceholder)
+    form(id=id)
+        h3=title
+        block
+
+        input(type="submit" data-method=method, data-endpoint=endpoint, data-args=extra)

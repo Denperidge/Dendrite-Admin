@@ -4,26 +4,13 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Dendrite Admin
-        link(rel="stylesheet", href="npm:normalize.css/normalize.css")
-        link(rel="stylesheet", href="npm:wingcss/dist/wing.min.css")
-        style.
-            main {
-                width: 80%;
-                margin: auto;
-                text-align: center;
-            }
-            input[type=text] {
-                width: 60%;
-            }
-            #result {
-                text-align: left;
-                overflow: auto;
-                border-width: 1px;
-                border-style: solid;
-                border-color: black;
-            }
+        link(rel="stylesheet", href="stylesheet.scss")
 
+        script(src="npm:jquery/dist/jquery.min.js")
+        script(src="npm:jquery.json-viewer/json-viewer/jquery.json-viewer.js")
+        link(rel="stylesheet", href="npm:jquery.json-viewer/json-viewer/jquery.json-viewer.css") 
 
+        script(src="index.js")
 
     body 
         include form.pug
@@ -34,53 +21,51 @@ html(lang="en")
 
             pre#result
 
-            form(method="GET", action="/")
-                h2 General config
-                label(for="baseurl") Base url
-                input(type="text" name="baseurl" placeholder="https://matrix.example.com")#baseurl.config
 
-                br
+            h2 General config
+            label(for="baseurl") Base url
+            input(type="text" name="baseurl" placeholder="https://matrix.example.com")#baseurl.config
+            br
 
-                label(for="accesstoken") Accesstoken
-                input(type="text" name="accesstoken" placeholder="Access token")#accesstoken.config
-                br
+            label(for="accesstoken") Accesstoken
+            input(type="text" name="accesstoken" placeholder="Access token")#accesstoken.config
+            br
 
-                h2 Endpoints
-                select(selected=0)#selectendpoint
-                    +endpoint("GET", "/_matrix/client/v3/admin/whois/", "userId", "@user:example.com")
-                br
-
-                h2 Endpoint arguments
-
-                label(for="arg")#arglabel Arg
-                input(type="text" name="arg" placeholder="{argument}")#arg
-                br
-
-                input(type="submit")
-
-                br
+            h2 Preconfigured endpoints
+            +endpoint("whois", "Whois {USER}")
+                input(type="text"  placeholder="@user:example.com")
+                script.
+                    onFormSubmit("#whois", {
+                        method: "GET",
+                        endpoint: "/_matrix/client/v3/admin/whois/",
+                        param: $("#whois input").val()
+                    });
+    
 
 
-                details#request
-                    summary Request info
-
+            h2 Manual request
+            details#request
+                summary Manual request
+                form(method="GET", action="/")#manual
+                    
                     label(for="method") Method
-                    select(name="method")#method
-                        option GET
-                        option POST
+                    input( type="text", name="method")#method
                     br
 
                     label(for="endpoint") Endpoint
                     input(type="text" name="endpoint" placeholder="/_matrix/client/v3/")#endpoint
-
                     br
 
+                    h3 Endpoint arguments
 
+                    label(for="param")#paramlabel URL Parameter
+                    input(type="text" name="param" placeholder="parameter")#param
+                    br
 
+                    label(for="body")#bodylabel Body string
+                    input(type="text" name="body" placeholder='{data: "example"}')#body
+                    br
 
-        script(src="npm:jquery/dist/jquery.min.js")
+                    input(type="submit")
+
         
-        script(src="npm:jquery.json-viewer/json-viewer/jquery.json-viewer.js")
-        link(rel="stylesheet", href="npm:jquery.json-viewer/json-viewer/jquery.json-viewer.css") 
-
-        script(src="index.js")

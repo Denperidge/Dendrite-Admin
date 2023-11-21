@@ -16,47 +16,45 @@ function displayRequestResponse(data, success=true) {
         "border-color", success ? "green": "red"
     ).jsonViewer(data);
 }
+function onFormSubmit(formSelector, args) {
+    $(formSelector).on("submit", (e) => {
+        e.preventDefault();
+        sendRequest(args);
+    });
+}
+onFormSubmit("form#manual", {});
 
-$("form").on("submit", function(e) {
-    console.log("meow")
 
-    e.preventDefault();
-    target = $(e.target);
 
-    console.log("meow")
+function sendRequest(args) {
+    const method = args.method || $("#method").val();
+    const baseurl = args.baseurl || $("#baseurl").val().trim();
+    const endpoint = args.endpoint || $("#endpoint").val().trim();
+    const param = args.param || $("#param").val().trim();
+    const body = args.body || false;
 
-    $.ajax({
-        type: $("#method").val(),
-        url: $("#baseurl").val().trim() + $("#endpoint").val().trim() + $("#arg").val().trim(),
-
+    console.log(baseurl + endpoint + param)
+        
+    const requestOptions = {
+        type: method,
+        url: baseurl + endpoint + param,
+        
         contentType: "application/json",
         headers: {
             "Authorization": "Bearer " + $("#accesstoken").val()
         }
-    }).then((data) => {
+    };
+
+    if (body) {
+        requestOptions.body = body;
+    }
+
+    $.ajax(requestOptions).then((data) => {
         console.log(data)
         displayRequestResponse(data, success=true);
     }).catch((err) => {
         console.error(err);
         displayRequestResponse(err, false);
     });
-});
-
-
-function endpointSelect() {
-    const target = $("#selectendpoint option:selected");
-
-    console.log(target)
-    const method = target.attr("data-method");
-    const endpoint = target.attr("data-endpoint");
-    const argname = target.attr("data-argname");
-    const placeholder = target.attr("data-placeholder");
-
-    $("#method").val(method);
-    $("#endpoint").val(endpoint);
-    $("#arglabel").text(argname);
-    $("#arg").attr("placeholder", placeholder);
 }
 
-$("#selectendpoint").on("input", endpointSelect);
-endpointSelect();
