@@ -9,6 +9,14 @@ $(".config").each((i, elem) => {
 
 
 // Send requests
+function displayRequestResponse(data, success=true) {
+    $("#result").animate({
+        "height": "600px",
+    }).css(
+        "border-color", success ? "green": "red"
+    ).jsonViewer(data);
+}
+
 $("form").on("submit", function(e) {
     console.log("meow")
 
@@ -27,9 +35,10 @@ $("form").on("submit", function(e) {
         }
     }).then((data) => {
         console.log(data)
-        $("#result").animate({"height": "600px"}).jsonViewer(data);
+        displayRequestResponse(data, success=true);
     }).catch((err) => {
         console.error(err);
+        displayRequestResponse(err, false);
     });
 });
 
