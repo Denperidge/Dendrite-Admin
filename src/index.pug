@@ -40,7 +40,16 @@ html(lang="en")
                         endpoint: "/_matrix/client/v3/admin/whois/",
                         param: $("#whois input").val()
                     });
-    
+
+            +endpoint("register", "Register")
+                input(type="text")
+
+                script.
+                    onFormSubmit("#whois", {
+                        method: "GET",
+                        endpoint: "/_matrix/client/v3/admin/whois/",
+                        param: $("#whois input").val()
+                    });
 
 
             h2 Manual request
