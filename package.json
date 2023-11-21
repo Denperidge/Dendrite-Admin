@@ -2,7 +2,6 @@
   "name": "dendrite-admin",
   "version": "0.1.0",
   "description": "A simple web app to run admin commands on Dendrite",
-  "main": "index.js",
   "author": "Denperidge",
   "license": "MIT",
   "scripts": {

@@ -33,15 +33,16 @@ jobs:
         uses: actions/configure-pages@v2
         
       - name: Install pre-requirements
-        run: npm install
+        run: yarn
+
       - name: Build
-        run: npm run build
+        run: yarn build
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
-          path: 'build/'
+          path: 'dist/'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
