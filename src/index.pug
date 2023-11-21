@@ -1,0 +1,41 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Dendrite Admin
+        link(rel="stylesheet", href="npm:normalize.css/normalize.css")
+        link(rel="stylesheet", href="npm:wingcss/dist/wing.min.css")
+        style.
+            main {
+                width: 80%;
+                margin: auto;
+                text-align: center;
+            }
+            input[type=text] {
+                width: 60%;
+            }
+            #result {
+                text-align: left;
+                overflow-x: auto;
+            }
+    body 
+        include form.pug
+        header
+        
+        main#main
+            h1 Dendrite Admin
+            input(type="text" placeholder="Access token")#accesstoken.config
+            input(type="text" placeholder="matrix.example.com")#baseurl.config
+
+            pre#result
+
+            +form("GET", "/_matrix/client/v3/admin/whois/{userId}", "userId")
+
+
+        script(src="npm:jquery/dist/jquery.min.js")
+        
+        script(src="npm:jquery.json-viewer/json-viewer/jquery.json-viewer.js")
+        link(rel="stylesheet", href="npm:jquery.json-viewer/json-viewer/jquery.json-viewer.css") 
+
+        script(src="index.js")

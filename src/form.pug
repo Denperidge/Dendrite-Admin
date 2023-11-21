@@ -1,0 +1,8 @@
+mixin form(method="GET", action, argname)
+    form(method=method, data-action=action, action=action)
+        h2 #{method} #{action}
+        if argname
+            input(type="text" name=argname placeholder=argname id=argname)
+        br
+        input(type="submit")
+        
